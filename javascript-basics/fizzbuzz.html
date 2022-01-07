@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <p id="paragraph"></p>
+  <script>
+    function countFizzBuzz(number) {
+    let output = "";
+      for (let i = 1; i <= number; i++) {
+        let text = "";
+        if ((i % 3) == 0) {
+          text = text.concat("Fizz");
+        }
+        if ((i % 5) == 0) {
+          text = text.concat("Buzz");
+        }
+        if ((i % 3) != 0 && (i % 5) != 0) {
+          text = String(i);
+        }
+        output = output.concat(text, "<br>");
+      }
+      return output;
+    }
+    para = document.getElementById("paragraph");
+    let answer = parseInt(prompt("Please enter the number you would like to FizzBuzz up to: "));
+    para.innerHTML = countFizzBuzz(answer);
+  </script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="results"></div>
+
+  <script>
+    
+    function computerPlay() {
+      let randomInt = Math.floor(Math.random() * 3);
+      let computerSelection = "";
+      if (randomInt == 0) {
+        computerSelection = "ROCK";
+      }
+      else if (randomInt == 1) {
+        computerSelection = "PAPER";
+      }
+      else {
+        computerSelection = "SCISSORS";
+      }
+      console.log(computerSelection);
+      return computerSelection;
+    }
+    
+    function humanPlay() {
+      let humanSelection = "";
+      while (true) {
+        humanSelection = prompt("Rock, paper, or scissors? ");
+        if (humanSelection == null) {
+          break;
+        }
+        humanSelection = humanSelection.toUpperCase();
+        console.log("Reached conditionals");
+        if (humanSelection == "ROCK" || humanSelection =="PAPER" || humanSelection == "SCISSORS") {
+          console.log("Passed conditionals");
+          let div = document.getElementById("results");
+          let p = document.createElement("p");
+          div.append(p)
+          p.append(`You chose ${humanSelection.toLowerCase()}`);
+          break;
+        }
+      }
+      console.log("Finished humanSelection loop");
+      return humanSelection;
+    }
+    
+    function simulateRound() {
+      let winner = "";
+      computerSelection = computerPlay();
+      humanSelection = humanPlay();
+      let div = document.getElementById("results");
+      let p = document.createElement("p");
+      div.append(p)
+      while (true) {
+        console.log("it's a loop!");
+        if (humanSelection == computerSelection) {
+          winner = "Tie";
+          p.append("You tied with the computer!");
+          return winner;
+        }
+        if (humanSelection == "ROCK") {
+          if (computerSelection == "PAPER") {
+            winner = "Computer";
+            break;
+          }
+          else {
+            winner = "You";
+            break;
+          }
+        }
+        if (humanSelection == "PAPER") {
+          if (computerSelection == "SCISSORS") {
+            winner = "Computer";
+            break;
+          }
+          else {
+            winner = "You";
+            break;
+          }
+        }
+        if (humanSelection == "SCISSORS") {
+          if (computerSelection == "ROCK") {
+            winner = "Computer";
+            break;
+          }
+          else {
+            winner = "You";
+            break;
+          }
+        }
+        if (humanSelection == null) {
+          winner = null;
+          p.append(`You quit the game...`);
+          return winner;
+        }
+      }
+      let winnerSelection = "";
+      (winner == "Computer") ? winnerSelection = computerSelection : winnerSelection = humanSelection;
+      p.append(`${winner} won with ${winnerSelection.toLowerCase()}!`);
+      return winner;
+    }
+    
+    function simulateGame() {
+      const ROUNDS = 5;
+      const victoryThreshold = ROUNDS / 2;
+      let winnerText = "";
+      let computerPoints = 0;
+      let humanPoints = 0;
+      while(true) {
+        let result = simulateRound();
+        if (result == "You") {
+          humanPoints++;
+        }
+        else if (result == "Computer") {
+          computerPoints++;
+        }
+        if (result == null) {
+          computerPoints = victoryThreshold + 1;
+        }
+        if (computerPoints > victoryThreshold || humanPoints > victoryThreshold) {
+          break;
+        }
+      }
+      if (computerPoints > humanPoints) {
+        winnerText = "The computer wins!";
+      }
+      else {
+        winnerText = "You win!";
+      }
+      let div = document.getElementById("results");
+      let p = document.createElement("p");
+      div.append(p)
+      p.append(winnerText);
+    }
+    simulateGame();
+  </script>
+</body>
+</html>
