@@ -10,12 +10,18 @@
   <div id="container"></div>
   <btn id='btn'>Click me!</btn>
   <script>
-    const btn = document.querySelector('#btn');
-    btn.addEventListener('click', function(e) {
-      console.log(e.target);
-      e.target.style.background = 'blue';
-    })
 
+    let promiseMaker = new Promise((resolve) => {
+      const btn = document.querySelector('#btn');
+      btn.addEventListener('click', function(event) {
+        resolve(event.target);
+      });
+    });
+
+    promiseMaker.then((btnTarget) => {
+      console.log(btnTarget);
+      btnTarget.style.background = 'blue';
+    });
 
   </script>
 </body>

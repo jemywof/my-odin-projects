@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Document</title>
+</head>
+<body>
+  <div class="ui">
+    <div class="results"></div>
+    <div class="prompt">
+      <h4>Rock, paper, or scissors?</h4>
+    </div>
+    <div class="buttons">
+      <button value="ROCK">Rock!</button>
+      <button value="PAPER">Paper!</button>
+      <button value="SCISSORS">Scissors!</button>
+    </div>
+  </div>
+
+  <script>
+    const ROUNDS = 5;
+    const victoryThreshold = ROUNDS / 2;
+    let winnerText = "";
+    let computerPoints = 0;
+    let humanPoints = 0;
+
+    options = document.querySelectorAll('button');
+    options.forEach((option) => {
+      option.addEventListener('click', function(event){
+        if (winnerText.length < 3) {
+          let humanSelection = this.value;
+          addText(`You chose ${humanSelection.toLowerCase()}`);
+          simulateRound(humanSelection);
+        }
+      });
+    });
+
+    function computerPlay() {
+      let randomInt = Math.floor(Math.random() * 3);
+      let computerSelection = "";
+      if (randomInt == 0) {
+        computerSelection = "ROCK";
+      }
+      else if (randomInt == 1) {
+        computerSelection = "PAPER";
+      }
+      else {
+        computerSelection = "SCISSORS";
+      }
+      addText(`Computer chose ${computerSelection.toLowerCase()}`);
+      return computerSelection;
+    }
+    
+    function simulateRound(humanSelection) {
+      let computerSelection = computerPlay();
+      let winner = "";
+      if (humanSelection == computerSelection) {
+        winner = "Tie";
+        addText("You tied with the computer!");
+        return;
+      }
+      if (humanSelection == "ROCK") {
+        if (computerSelection == "PAPER") {
+          winner = "Computer";
+          computerPoints++;
+        }
+        else {
+          winner = "You";
+          humanPoints++;
+        }
+      }
+      if (humanSelection == "PAPER") {
+        if (computerSelection == "SCISSORS") {
+          winner = "Computer";
+          computerPoints++;
+        }
+        else {
+          winner = "You";
+          humanPoints++;
+        }
+      }
+      if (humanSelection == "SCISSORS") {
+        if (computerSelection == "ROCK") {
+          winner = "Computer";
+          computerPoints++;
+        }
+        else {
+          winner = "You";
+          humanPoints++;
+        }
+      }
+      let winnerSelection = "";
+      (winner == "Computer") ? winnerSelection = computerSelection : winnerSelection = humanSelection;
+      addText(`${winner} won with ${winnerSelection.toLowerCase()}!`);
+      simulateGame();
+    }
+    
+    function simulateGame() {
+      if (computerPoints > victoryThreshold || humanPoints > victoryThreshold) {
+        if (computerPoints > humanPoints) {
+          winnerText = "The computer wins!";
+        }
+        else {
+          winnerText = "You win!";
+        }
+        p = addText(winnerText);
+        p.style.fontWeight = 'bolder';
+        p.style.fontSize = '1.2em';
+      }
+    }
+
+    function addText(text) {
+      let div = document.querySelector(".results");
+      let p = document.createElement("p");
+      p.append(text);
+      div.append(p)
+      return p;
+    }
+  </script>
+</body>
+</html>
