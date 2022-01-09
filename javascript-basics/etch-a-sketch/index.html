@@ -31,19 +31,14 @@
 
   <script>
 
-    const randomColorFinder = function() {
+    const colorize = function() {
       let randomInts = [];
       let i = 0;
       for (; i < 3; i++) {
         randomInts.push(Math.floor(Math.random() * 255));
       }
       let colors = `${randomInts[0]}, ${randomInts[1]}, ${randomInts[2]}`;
-      return colors;
-    }
-
-
-    const colorize = function() {
-      this.style.backgroundColor = `rgb(${randomColorFinder()})`;
+      this.style.backgroundColor = `rgb(${colors})`;
     }
 
     const initialize = function () {
@@ -76,8 +71,7 @@
         const items = Array.from(row.children);
         items.forEach(item => {
           console.log(item);
-          //maybe try mouseover???
-          item.addEventListener('mouseenter', colorize);
+          item.addEventListener('mouseover', colorize);
         })
       });
     }

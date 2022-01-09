@@ -100,3 +100,7 @@ a, p {
 .item:hover {
   background-color: red;
 }
+
+.footer {
+  justify-content: center;
+}
