@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculator!</title>
+  <link rel='stylesheet' href='./styles.css'>
+</head>
+<body>
+  <div class='header'>
+    <a href="#">Home</a>
+  </div>
+  <div class='container'>
+    <div class='calculator-body'>
+      <div class='calculator-header'>
+        <div class='header-casio'>
+          <p>CAS.IO</p>
+        </div>
+        <div class='header-solar'>
+        </div>
+        <div class='header-serial'>
+          <p>JW-413</p>
+        </div>
+      </div>
+      <div class='display'>
+        <p>
+        </p>
+      </div>
+      <div class='buttons'>
+        <div class='button-numbers'>
+          <button value='1'>1</button>
+          <button value='2'>2</button>
+          <button value='3'>3</button>
+          <button value='4'>4</button>
+          <button value='5'>5</button>
+          <button value='6'>6</button>
+          <button value='7'>7</button>
+          <button value='8'>8</button>
+          <button value='9'>9</button>
+          <button value='0'>0</button>
+        </div>
+        <div class='button-misc'>
+          <button id='clear'>Clear</button>
+          <button id='backspace'>Back</button>
+          <button id='decimal'>&nbsp;.&nbsp;</button>
+          <button id='equals'>&nbsp;=&nbsp;</button>
+        </div>
+        <div class='button-operators'>
+          <button value='+'>&nbsp;+&nbsp;</button>
+          <button value='-'>&nbsp;-&nbsp;</button>
+          <button value='*'>&nbsp;x&nbsp;</button>
+          <button value='/'>&nbsp;/&nbsp;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class='footer'>
+    <p>Brought to you by Jermo</p>
+  </div>
+  <script>
+
+
+    //initialize variables
+
+
+    let displayText = document.querySelector('.display > p').textContent;
+
+    const MAXIMUM_DISPLAY_LENGTH = 15
+
+
+    //initialize functions
+
+
+    const add = (num1, num2) => num1 + num2;
+
+    const subtract = (num1, num2) => num1 - num2;
+
+    const multiply = (num1, num2) => num1 * num2;
+
+    const divide = (num1, num2) => num1 / num2;
+    
+    const addKey = function(key) {
+      if (displayText.length > MAXIMUM_DISPLAY_LENGTH) return;
+      displayText = displayText.concat(key).trim();
+      document.querySelector('.display > p').textContent = displayText;
+    }
+
+    const findLastKey = function() {
+      let lastKey = displayText.slice(-1);
+      return lastKey;
+    }
+
+    const splitDisplay = function() {
+      let workingNumbersArray = displayText.split(/[\/\*\+\-]+/);
+      return workingNumbersArray;
+    }
+
+    const displayError = function(message) {
+      displayText = "";
+      addKey(message);
+    }
+
+    const performEquation = function() {
+      let workingNumbersArray = splitDisplay();
+      let equationLength = workingNumbersArray.length;
+      while (equationLength > 1) {
+        let num1 = workingNumbersArray.shift();
+        let num2 = workingNumbersArray.shift();
+        let operator = displayText.slice(num1.length, num1.length + 1);
+        let product = 0;
+        num1 = Number(num1);
+        num2 = Number(num2);
+        switch (operator) {
+          case '*': 
+            product = multiply(num1, num2);
+            break;
+          case '/': 
+            if (num2 == 0) {
+              displayError("INFINITY"); 
+              return;
+            }
+            product = divide(num1, num2);
+            product.toFixed(MAXIMUM_DISPLAY_LENGTH - displayText.length);
+            break;
+          case '-': 
+            product = subtract(num1, num2);
+            break;
+          case '+': 
+            product = add(num1, num2);
+            break;
+          default: 
+            displayError("FAILED TO PARSE");
+            break;
+        }
+        product = product.toString();  
+        workingNumbersArray.unshift(product);
+        equationLength = workingNumbersArray.length;
+      }
+      displayText = "";
+      addKey(workingNumbersArray[0]);    
+    }
+
+
+    //add buttons and respective event listeners
+
+
+    const numberButtons = [...document.querySelectorAll('.button-numbers > button')];
+    numberButtons.forEach(numberButton => {
+      numberButton.addEventListener('click', () => {
+        addKey(numberButton.value);
+      })
+    });
+
+    const decimalButton = document.getElementById('decimal');
+    decimalButton.addEventListener('click', () => {
+      if (displayText.includes('.')) return;
+      addKey('.');
+    });
+
+    const operatorButtons = [...document.querySelectorAll('.button-operators > button')];
+    operatorButtons.forEach(operator => {
+      operator.addEventListener('click', () => {
+        let lastKey = findLastKey();
+        switch (lastKey) {
+          case '*':
+          case '/':
+          case '-':
+          case '+':
+          case '.': break;
+          default: addKey(operator.value);
+        }
+      });
+    });
+
+    const equalsButton = document.getElementById('equals');
+    equalsButton.addEventListener('click', performEquation);
+
+    const clearButton = document.getElementById('clear');
+    clearButton.addEventListener('click', () => {
+      displayText = "";
+      document.querySelector('.display > p').textContent = displayText;
+    });
+
+    const backButton = document.getElementById('backspace');
+    backButton.addEventListener('click', () => {
+      displayText = displayText.slice(0, -1);
+      document.querySelector('.display > p').textContent = displayText;
+    })
+
+  </script>
+</body>
+</html>
