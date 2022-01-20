@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="styles.css" rel="stylesheet">
+  <script src="script.js"></script>
+  <title>Library</title>
+</head>
+<body>
+  <header>
+    <a href="#">Home</a>
+    <button class='create-button' onclick='openBookForm()'>NEW BOOK!</button>
+    <div id='createModal' class='modal'>
+      <div class='create-fields'>
+        <span class='close'>&times;</span>
+        <input id='title' type='text'>
+        <input id='author' type='text'>
+        <input id='pageCount' type='number'>
+        <div class='modal-has-read'>
+          <p>Have you read this book?</p>
+          <div class='radio-field'>
+            <input type='radio' id='yes' name='hasRead' value= 1><label for='yes'>Yes</label>
+            <input type='radio' id='no' name='hasRead' value= 0><label for='no'>No</label>
+          </div>
+        </div>
+        <button value='submit' type='submit' onclick='submitBookForm()'>Submit</button>
+      </div>  
+    </div>    
+  </header>
+  <main>
+    <div id="bookDisplay">
+    </div>
+  </main>
+  <footer>
+    <p>Brought to you by Jermo</p>
+  </footer>
+</body>
+</html>
