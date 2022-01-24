@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="styles.css" rel="stylesheet">
+  <script src="script.js"></script>
+  <title>Tic-Tac-Toe!</title>
+</head>
+<body>
+  <header>
+    <a href="#">Home</a>
+    <button class='restart-button' onclick='GameBoard.resetBoard()'>Restart Game</button>
+    <div id='createModal' class='modal'>
+      <div class='create-fields'>
+        <input id='playerOne' type='text'>
+        <input id='playerTwo' type='text'>
+        <input id='qtyRounds' type='number'>
+        <button value='submit' type='submit' onclick='submitBookForm()'>Submit</button>
+      </div>  
+    </div>    
+  </header>
+  <main>
+    <div id="gameBoard">
+    </div>
+  </main>
+  <footer>
+    <p>Brought to you by Jermo</p>
+  </footer>
+</body>
+</html>

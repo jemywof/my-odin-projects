@@ -4,7 +4,7 @@
 
 //initialize general global variables
 
-//i literally don't use this array for anything
+//i don't use this array for anything
 //but ODIN said I should use it
 //so here we are!
 let myLibrary = [];
