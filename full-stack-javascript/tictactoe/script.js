@@ -1,8 +1,16 @@
-//this script plays a game of tic-tac-toe between two human players
+//This script plays a game of tic-tac-toe between two human players
+//
 //The main goal of the scripting exercise is to use as little global
 //code as possible by utilizing modules/factories.
-
-//The code is designed with expandability in mind.
+//
+//These are the script's global variables:
+  //GameBoard module
+  //GameFlow module
+  //playerOne Object
+  //playerTwo Object
+//
+//
+//The code is also designed with expandability in mind.
 //It will later become the foundation for a game-project called 'Pente'.
 
 
@@ -27,6 +35,8 @@ const GameBoard = ( () => {
         board.appendChild(div);
       }
     }
+    playerOne.scoreboard.textContent = `${playerOne.name}: ${playerOne.score}`;
+    playerTwo.scoreboard.textContent = `${playerTwo.name}: ${playerTwo.score}`;
   }
 
   //resetBoard: resets the page for a new game
@@ -43,10 +53,16 @@ const GameBoard = ( () => {
     let x = Number(idArray[0]);
     let y = Number(idArray[1]);
     if (isWon(x, y)) {
+      spacesFilled = 0;
+      GameFlow.activePlayer.score++;
       sayVictory(GameFlow.activePlayer);
     } else {
       spacesFilled++;
-      if (spacesFilled >= GRID_SIZE * GRID_SIZE) sayVictory(null);
+      if (spacesFilled >= GRID_SIZE * GRID_SIZE) {
+        console.log(spacesFilled);
+        spacesFilled = 0;
+        sayVictory(null);
+      }
       GameFlow.changeTurn();
     }
   }
@@ -131,32 +147,40 @@ const GameBoard = ( () => {
   }
   //sayVictory: displays victory screen, asks GameFlow to end
   const sayVictory = function(winner) {
-    console.log('victory!');
-    GameFlow.endGame();
+    let winningText = `${GameFlow.activePlayer.name} has won!`;
+    if (!winner) {
+      winningText = "Tie!";
+    }
+    let textField = document.getElementById('victoryh1');
+    textField.textContent = winningText;
+    let modal = document.querySelector('.victory-screen');
+    modal.style.display='block';
+    let closeButton = document.querySelector('.close');
+    closeButton.onclick = function() {
+      modal.style.display = 'none';
+      GameFlow.endGame();
+    }
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = 'none';
+        GameFlow.endGame();
+      }
+    }
   }
 
-  //user interaction listeners!:
-    //mouseover will change css after querying findOccupied
+  const clearBoard = function() {
+    let board = document.getElementById('gameBoard');
+    while (board.firstChild) {
+      board.removeChild(board.firstChild)
+    }
+  }
+  //user interaction listener!:
     //click will change css to either:
       //makeMove if legal
       //failMove if illegal
   const addListeners = function() {
     let squares = [...document.querySelectorAll('div#gameBoard > div')];
     squares.forEach((square) => {
-      square.addEventListener('mouseover', function() {
-        if (square.textContent.length) {
-          square.classList.toggle('occupied');
-        } else {
-          square.classList.toggle('unoccupied');
-        }
-      });
-      square.addEventListener('mouseleave', function() {
-        if (square.textContent.length) {
-          square.classList.toggle('occupied');
-        } else {
-          square.classList.toggle('unoccupied');
-        }
-      });
       square.addEventListener('click', function() {
         if (square.textContent.length) {
           failMove(square);
@@ -171,7 +195,8 @@ const GameBoard = ( () => {
           resetBoard,
           makeMove, 
           findOccupant,
-          addListeners
+          addListeners,
+          clearBoard
           };
 }) ();
 
@@ -185,26 +210,25 @@ const GameBoard = ( () => {
 const GameFlow = ( () => {
   let activePlayer = 0;
   const changeTurn = function() {
+    playerOne
     if (GameFlow.activePlayer == playerOne) {
       GameFlow.activePlayer = playerTwo;
     } else {
       GameFlow.activePlayer = playerOne;
     }
+    playerOne.scoreboard.classList.toggle('is-turn');
+    playerTwo.scoreboard.classList.toggle('is-turn');
   }
   //startGame: loads gameboard and assigns first turn
   const startGame = function() {
-    playerOne = PlayerFactory('Jeff', 'X');
-    playerTwo = PlayerFactory('Billy', 'O');
     GameBoard.displayBoard();
     GameBoard.addListeners();
     GameFlow.changeTurn();
   }
-  //endGame: 
+  //endGame: asks GameBoard to clear the board,
+  //checks if roundCount has hit its limit
   const endGame = function() {
-    let board = document.getElementById('gameBoard');
-    while (board.firstChild) {
-      board.removeChild(board.firstChild)
-    }
+    GameBoard.clearBoard();
     startGame();
   }
   return {changeTurn,
@@ -218,18 +242,32 @@ const GameFlow = ( () => {
 //These:
 //speak to the GameBoard units
 //hear from the GameFlow module
-const PlayerFactory = (name, symbol) => {
+const PlayerFactory = (name, symbol, idString) => {
   let score = 0;
+  const scoreboard = document.getElementById(idString);
   const makeMove = GameBoard.makeMove.bind(symbol);
-  return {name, symbol, score, makeMove};
+  return {name, symbol, score, scoreboard, makeMove};
 }
 
 
 
 
-//begins the script by loading GameBoard, starting GameFlow,
-  //and listening for Player actions
+//submitting the form begins the game by creating persons, 
+//loading GameBoard, and starting GameFlow
 document.addEventListener("DOMContentLoaded", function() {
-  GameFlow.startGame();
+  let modal = document.getElementById('createModal');
+  modal.style.display='block';
+  let submitButton = document.getElementById('submit');
+  submitButton.onclick = function() {
+    pOneName = document.getElementById('playerOne').value;
+    pTwoName = document.getElementById('playerTwo').value;
+    pOneName = !pOneName ? 'Player One' : pOneName;
+    pTwoName = !pTwoName ? 'Player Two' : pTwoName;
+    modal.style.display = 'none';
+    //cast these as global variables to use in modules
+    playerOne = PlayerFactory(pOneName, 'X', 'pOneScore')
+    playerTwo = PlayerFactory(pTwoName, 'O', 'pTwoScore');
+    GameFlow.startGame();
+  }
 });
 

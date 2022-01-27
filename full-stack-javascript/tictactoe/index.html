@@ -11,15 +11,30 @@
 <body>
   <header>
     <a href="#">Home</a>
+    <div class='scoreboard'>
+      <p id='pOneScore'></p>
+      <p id='pTwoScore' class='is-turn'></p>
+    </div>
     <button class='restart-button' onclick='GameBoard.resetBoard()'>Restart Game</button>
     <div id='createModal' class='modal'>
       <div class='create-fields'>
-        <input id='playerOne' type='text'>
-        <input id='playerTwo' type='text'>
-        <input id='qtyRounds' type='number'>
-        <button value='submit' type='submit' onclick='submitBookForm()'>Submit</button>
+        <div>
+          <p>Player One's Name:</p>
+          <input id='playerOne' type='text'>
+        </div>
+        <div>
+          <p>Player Two's Name:</p>
+          <input id='playerTwo' type='text'>
+        </div>
+        <button id='submit' type='submit' onclick='submitBookForm()'>Play!</button>
       </div>  
-    </div>    
+    </div>
+    <div class='victory-screen'>
+      <div class='victory-text-field'>
+        <span class="close">x</span>
+        <h1 id='victoryh1'></h1>
+      </div>
+    </div>
   </header>
   <main>
     <div id="gameBoard">

@@ -26,8 +26,27 @@ a, p {
   font-size: 20px;
 }
 
-.create-button {
-  
+.scoreboard {
+  display: flex;
+  justify-content: space-around;
+  margin-left:auto;
+  gap: 3em;
+}
+.scoreboard > p {
+  padding-inline: 0.5em;
+}
+.is-turn {
+  border: 2px solid black;
+  border-radius: 0.5vw;
+}
+
+.restart-button {
+  margin-left: auto;
+  padding: 0.3em;
+  padding-inline: 0.6em;
+  border: none;
+  background-color: white;
+  border-radius: 0.6vw;
 }
 
 .modal {
@@ -40,23 +59,35 @@ a, p {
   height: 100%; 
   overflow: auto; 
   background-color: rgb(0,0,0); 
-  background-color: rgba(0,0,0,0.4);
+  background-color: rgba(0,0,0,0.8);
 }
 
 .create-fields {
+  display: flex;
+  justify-content: space-around;
   background-color: #fefefe;
   margin: 15% auto;
   padding: 20px;
   border: 1px solid #888;
   width: 80%;
+  border-radius: 1vw;
 }
-
-.modal-has-read {
-  display: flex;
+.create-fields > div {
+  text-align: center;
 }
-.radio-field {
-  display: flex;
-  flex-direction: column;
+.create-fields > div > input{
+  background-color: rgb(240,240,240);
+  width: 10em;
+  border-radius: 0.5vw;
+}
+.create-fields > button {
+  background-color: rgb(50,220,50);
+  font-weight:bolder;
+  font-size: 26px;
+  border-radius: 2vw;
+  padding-inline: 1em;
+  border: none;
+  cursor: pointer;
 }
 
 main {
@@ -89,15 +120,6 @@ main {
   font-weight: bold;
 }
 
-.occupied {
-  background-color: salmon;
-  box-shadow: inset 0px 0px 4px 4px salmon;
-}
-.unoccupied {
-  background-color: white;
-    box-shadow: inset 0px 0px 4px 4px greenyellow;
-}
-
 .victory-screen {
   display: none;
   position: fixed;
@@ -109,6 +131,27 @@ main {
   overflow: auto; 
   background-color: rgb(0,0,0); 
   background-color: rgba(0,0,0,0.4);
+}
+.victory-text-field {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  border-radius: 1vw;
+  padding: 0;
+  padding-inline: 2vw;
+}
+.victory-text-field > h1 {
+  text-align: center;
+  padding-bottom: 40px;
+  font-size: 36px;
+}
+.close {
+  font-size: 30px;
+  display: flex;
+  justify-content: flex-end;
+  cursor: pointer;
 }
 
 .footer {
