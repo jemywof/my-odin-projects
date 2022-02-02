@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel='stylesheet' href='style.css'>
+  <title>Sign Up!</title>
+</head>
+<body>
+  <div class="imagery-div">
+    <p>Photo by Alexandre Debiève on Unsplash</p>
+  </div>
+  <div class="text-div">
+    <p class='intro-text'>
+    <form action="#" method="POST">
+      <div class="fields">
+        <div>
+          <label for='firstName'>*First Name</label>
+          <input type='text' id='firstName' required>
+        </div>
+
+        <div>
+          <label for='lastName'>*Last Name</label>
+          <input type='text' id='lastName' required>
+        </div>
+
+        <div>
+          <label for='email'>Email</label>
+          <input type='email' id='email'>
+        </div>
+
+        <div>
+          <label for='phone'>Phone Number</label>
+          <input type='string' id='phone'>
+        </div>
+
+        <div>
+          <label for='firstPassword'>*Password</label>
+          <input type='password' id='firstPassword' class='invalid' required>
+        </div>
+
+        <div>
+          <label for='confirmPassword'>*Confirm Password</label>
+          <input type='password' id='confirmPassword' class='invalid' required>
+          <p>Passwords do not match</p>
+        </div>
+      </div>
+      <button type='submit'>Create Account</button>
+      <p>Already have an account? <a href='#'>Log in</a>!</p>
+    </form>
+  </div>
+</body>
+</html>

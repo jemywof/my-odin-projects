@@ -1,0 +1,91 @@
+* {
+  --color-main: #1B3D81;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+body {
+  margin: 0;
+  display: flex;
+  max-width: 100vw;
+  height: 100vh;
+}
+
+.imagery-div {
+  background-image: url('background-image.jpg');
+  background-size: 100vw;
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  flex-grow: 1;
+  justify-content: flex-end;
+}
+.imagery-div > p {
+  color: rgb(220,220,230);
+  background-color: rgb(0,0,0,0.4);
+  width: fit-content;
+  border-radius: 0.1em;
+  margin-left: 1em;
+}
+
+.text-div {
+  background-color: rgb(255,252,252);
+  padding-top: 10vh;
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  max-height: 100%;
+}
+
+.fields {
+  background-color: white;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+  padding: 2em;
+  max-width: 100%;
+  box-shadow: 1em 0.5em 0.9em 0em gray;
+}
+.fields > div {
+  display: flex;
+  flex-direction: column;
+  padding-right: 1.5em;
+}
+
+label {
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.fields > div > p {
+  margin: 0;
+  color: red;
+  font-size: 0.7rem;
+  position: absolute;
+  bottom: 0.4em;
+}
+
+button {
+  padding: 0.5em;
+  padding-inline: 1em;
+  background-color: var(--color-main);
+  color: white;
+  border-radius: 0.5em;
+  border: none;
+  margin: 1em;
+  margin-top: 2em;
+}
+
+p {
+  margin-left: 1em;
+}
+a {
+  color: var(--color-main);
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.invalid {
+  outline: 1px solid red;
+  border-radius: 0.5em;
+}
