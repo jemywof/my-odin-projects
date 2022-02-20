@@ -35,6 +35,12 @@ body {
   padding-block: 1rem;
 }
 
+.page-div {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-light);
+}
+
 .intro-page {
   display: flex;
   flex-direction: column;

@@ -1,24 +1,45 @@
 import menuPage from './menu-page.js';
 import mainPage from './main-page.js';
+import aboutPage from './about-page.js';
+import contactPage from './contact-page.js';
 
 const loadTaskBar = () => {
   const taskDiv = document.createElement('div');
   taskDiv.classList.add('task');
 
-  const menuButton = document.createElement('button');
-  menuButton.textContent = 'MENU HERE!';
-  menuButton.onclick = () => {
-    loadPage(menuPage);
-  }
-
   const mainButton = document.createElement('button');
-  mainButton.textContent = 'Main';
+  mainButton.textContent = 'Home';
   mainButton.onclick = () => {
     loadPage(mainPage);
   }
 
-  taskDiv.appendChild(menuButton);
-  taskDiv.appendChild(mainButton);
+  const menuButton = document.createElement('button');
+  menuButton.textContent = 'Menu';
+  menuButton.onclick = () => {
+    loadPage(menuPage);
+  }
+
+  const aboutButton = document.createElement('button');
+  aboutButton.textContent = 'About Us';
+  aboutButton.onclick = () => {
+    loadPage(aboutPage);
+  }
+
+  const contactButton = document.createElement('button');
+  contactButton.textContent = 'Contact Us';
+  contactButton.onclick = () => {
+    loadPage(contactPage);
+  }
+
+  function addToPage() {
+    //console.log(arguments);
+    let args = arguments;
+    for (let i = 0; i < args.length; i++) {
+      taskDiv.appendChild(args[i]);
+    }
+  }
+
+  addToPage(mainButton, menuButton, aboutButton, contactButton);
 
   return taskDiv;
 }
@@ -48,3 +69,5 @@ mainContent.classList.add('main');
 document.body.appendChild(mainContent);
 
 document.body.appendChild(loadFooter());
+
+loadPage(mainPage);
