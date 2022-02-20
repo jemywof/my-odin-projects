@@ -1,6 +1,6 @@
 const aboutPage = () => {
   const pageDiv = document.createElement('div');
-  mainDiv.classList.add('page-div');
+  pageDiv.classList.add('page-div');
 
   const aboutHeader = document.createElement('h3');
   aboutHeader.textContent = "About Chili's"

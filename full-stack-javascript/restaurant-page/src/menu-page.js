@@ -1,6 +1,6 @@
 const menuPage = function() {
-  const menuDiv = document.createElement('div');
-  menuDiv.classList.add('menu');
+  const pageDiv = document.createElement('div');
+  pageDiv.classList.add('menu');
 
   const menuGrid = document.createElement('div');
   menuGrid.classList.add('menu-grid');
@@ -58,8 +58,8 @@ const menuPage = function() {
   }
 
   menuGrid.appendChild(itemGrid);
-  menuDiv.appendChild(menuGrid);
-  return menuDiv;
+  pageDiv.appendChild(menuGrid);
+  return pageDiv;
 }
 
 export default menuPage;

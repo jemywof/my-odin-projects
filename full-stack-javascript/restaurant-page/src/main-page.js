@@ -1,12 +1,12 @@
 const mainPage = () => {
   const pageDiv = document.createElement('div');
-  pageDiv.classList.add('pageDiv');
+  pageDiv.classList.add('page-div');
 
   const mainHeader = document.createElement('h3');
-  aboutHeader.textContent = "Welcome to Chili's!"
+  mainHeader.textContent = "Welcome to Chili's!"
 
   const mainText = document.createElement('p');
-  aboutText.textContent = ("Chili's chili-house is a family"
+  mainText.textContent = ("Chili's chili-house is a family"
   + "-owned restaurant serving only the highest-quality"
   + " chili-based dishes and chili-adjacent foods.");
 

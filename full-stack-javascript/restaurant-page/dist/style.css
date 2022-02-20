@@ -19,10 +19,10 @@ body {
 .task {
   background-color: var(--bg-dark);
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   gap: 1em;
-  padding-inline: 5vw;
   padding: 0.5rem;
+  padding-inline: 15vw;
   margin-bottom: auto;
 }
 
@@ -34,11 +34,19 @@ body {
   padding-inline: 5vw;
   padding-block: 1rem;
 }
+.main > h2, h3, h4 {
+  font-size: 2rem;
+}
 
 .page-div {
   display: flex;
   flex-direction: column;
   background-color: var(--bg-light);
+  padding: 1rem;
+  align-items: center;
+  border: 2px solid var(--bg-dark);
+  border-radius: 1rem;
+  width: 80vw;
 }
 
 .intro-page {
