@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your To-Dos</title>
+  <link rel="stylesheet" href="./style.css">
+  
+</head>
+<body>
+  <div id='toDoModal' class='modal'>
+    <div class='create-fields'>
+      <span class="close">x</span>
+      <p>Add ToDo:</p>
+      <form action="/" method="POST">
+        <label for='title'>Title:</label>
+        <input type='text' name='title' id='title'>
+        <label for='desc'>Description:</label>
+        <textarea name='desc' id='desc' rows="4" cols="5">
+        </textarea>
+        <label for="due">Due Date:</label>
+        <input type="date" name="due" id="due">
+        <button type="submit" value="Submit">Add</button>
+      </form>
+    </div>
+  </div>
+  <div id='projectModal' class='modal'>
+    <div class='create-fields'>
+      <span class="close">x</span>
+      <p>Add Project:</p>
+      <form action="/" method="POST">
+        <label for='title'>Title:</label>
+        <input type='text' name='title' id='title'>
+        <label for='desc'>Description:</label>
+        <textarea name='desc' id='desc' rows="4" cols="5">
+        </textarea>
+        <button type="submit" value="Submit">Add</button>
+      </form>
+    </div>
+  </div>
+
+  <header>
+    <div class="welcome">
+      Welcome back, Seymour Butz!
+    </div>
+    <div class="tools">
+      <button class="add-project">New Project</button>
+    </div>
+  </header>
+  
+
+  <main>
+    <div class="project">
+      <div class="project-title">
+        Big Project!
+      </div>
+      <p class="project-desc">This project does BIG things for BIG people!!
+        Smallness is NOT allowed!!!</p>
+      <div class="project-due">Due: 5/5/2022</div>
+      <div class="task-grid">
+        <div class="task">
+          <input type="checkbox" value="isChecked">
+          <p>Clean the Gutter</p>
+          <p>Due: 2/1/2020</p>
+          </div>
+        <div class="task">
+          <input type="checkbox" value="isChecked">
+          <p>Booga</p>
+          <p>Due: 4/20/2022</p>
+        </div>
+        <div class="task">
+          <input type="checkbox" value="isChecked">
+          <p>Hooa</p>
+          <p>Due: 2/24/2022</p>
+        </div>
+      </div>
+      <div class="project-buttons">
+        <img class="svg">
+      </div>
+    </div>
+  </main>
+
+
+  <footer>
+    Made by Jeremy Wolfe, 2022
+  </footer>
+
+  <script src="./main.js"></script>
+</body>
+</html>

@@ -1,0 +1,195 @@
+/*Global Items*/
+
+* {
+  font-family: "Roboto", "Franklin Gothic Medium", Tahoma, sans-serif;
+  --bg-light: #eef2ff;
+  --bg-light2: #e0e7ff;
+  --bg-med: #c7d2fe;
+  --bg-med2: #a5b4fc;
+  --bg-dark: #818cf8;
+  --bg-dark2: #4f46e5;
+}
+
+img.svg {
+  filter: invert(100%) sepia(35%) saturate(0%) hue-rotate(158deg) brightness(110%) contrast(101%);
+}
+
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+button {
+  padding: 0.5rem;
+  border: none;
+  background-color: var(--bg-dark);
+  color: white;
+  font-weight: bold;
+  border-radius: 5% 5%;
+  box-shadow: none;
+}
+
+
+
+/*Modal Properties*/
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%; 
+  overflow: auto; 
+  background-color: rgb(0,0,0); 
+  background-color: rgba(0,0,0,0.8);
+}
+
+.create-fields {
+  display: flex;
+  gap: .2rem;
+  flex-direction: column;
+  background-color: var(--bg-light);
+  margin: 1% auto;
+  padding: 2rem;
+  padding-top: 5px;
+  border: 1px solid black;
+  width: 50%;
+  border-radius: 1rem;
+  justify-content: center;
+  text-align: center;
+}
+.create-fields > p {
+  font-size: 2rem;
+}
+form {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  gap: 0.6rem;
+}
+form > input{
+  width: 50%;
+  height: 1.5rem;
+  font-size: 1.4rem;
+  margin: 0 auto;
+  margin-bottom: 10px;
+  border-radius: 0.5rem;
+  text-align: center;
+  border: 1px solid gray;
+}
+textarea {
+  padding: 0.5rem;
+  width: 70%;
+  margin:0 auto;
+  border-radius: 0.5rem;
+  border: 1px solid gray;
+  font-size: 1.1rem;
+  text-align: center;
+}
+#due {
+  width: max-content;
+  padding-inline: 2%;
+}
+
+form > button {
+  background-color: var(--bg-dark);
+  width: 9rem;
+  margin: 0 auto;
+  font-weight:bolder;
+  font-size: 26px;
+  border-radius: 100vw;
+  padding-inline: 1rem;
+  border: none;
+  cursor: pointer;
+}
+
+.close {
+  font-size: 30px;
+  display: flex;
+  justify-content: flex-end;
+  cursor: pointer;
+}
+
+
+
+/*Main Body Items */
+
+main {
+  display: grid;
+  flex-grow: 1;
+  margin-top: auto;
+  margin-bottom: auto;
+  padding: 2rem;
+
+}
+
+.project {
+  width: 20rem;
+  background-color: var(--bg-light);
+  border-radius: 5% 5%;
+  padding: 0.5rem;
+  padding-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-light2)
+}
+
+.project-title {
+  font-size: 1.4em;
+  margin-left: 1rem;
+}
+
+.project-desc {
+}
+
+.project-due {
+  display: flex;
+  justify-content: right;
+  margin-bottom: 1rem;
+}
+
+.task-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2px;
+  background-color: gray;
+  padding-block: 1px;
+}
+
+.task {
+  display: flex;
+  gap: 0.75rem;
+  background-color: var(--bg-light);
+  display: grid;
+  grid-template-columns: min-content 1fr max-content;
+  padding-inline: 0.5rem;
+}
+
+
+
+/*Header/Footer items*/
+
+header, footer {
+  display: flex;
+  background-color: var(--bg-light2);
+  padding-inline: 2rem;
+  padding-block: 1rem;
+  align-items: center;
+}
+
+.welcome {
+}
+.tools {
+  margin-left: auto;
+  display: flex;
+  gap: 1rem;
+}
+
+footer {
+  justify-content: center;
+}
