@@ -1,4 +1,9 @@
-const domChanger = {
-  const sayHi = console.log(this)
+class domChanger {
+  constructor() {
+  }
+  sayHi() {
+    console.log("This is domChanger!");
+  }
 }
-export default domChanger;
+
+export default new domChanger
