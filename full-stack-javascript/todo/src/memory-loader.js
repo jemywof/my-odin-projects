@@ -1,8 +1,15 @@
+//this module loads and prepares the page's local data
+//this includes task/project data
 class memoryLoader {
   constructor() {
   }
-  sayHi() {
-    console.log("This is memoryLoader!");
+  getTestMemory(testProject) {
+    const loadedObject = JSON.parse(localStorage.getItem(testProject));
+    console.log("GETTING MEMORY:");
+    console.log(typeof loadedObject);
+    console.log(loadedObject);
+    console.log("DONE");
+    return loadedObject;
   }
 }
 
