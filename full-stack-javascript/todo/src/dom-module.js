@@ -11,7 +11,7 @@ class domChanger {
   loadProjectElement(className, content) {
     const div = document.createElement('div');
     div.classList.add(className);
-    div.textContent = content;
+    if (content) div.textContent = content;
     return div;
   }
 
@@ -29,10 +29,10 @@ class domChanger {
     let projectTitle = this.loadProjectElement('project-title', loadedObject.title);
     projectDiv.appendChild(projectTitle);
 
-    let projectDesc = this.loadProjectElement('project-desc', loadedObject.description);
+    let projectDesc = this.loadProjectElement('project-desc', loadedObject.desc);
     projectDiv.appendChild(projectDesc);
 
-    let projectDue = this.loadProjectElement('project-due', 'Due: 04/20/2020');
+    let projectDue = this.loadProjectElement('project-due', `Due: ${loadedObject.due}`);
     projectDiv.appendChild(projectDue);
 
 
@@ -66,18 +66,64 @@ class domChanger {
       div.appendChild(taskDue);
 
       //
-      //TODO: add 'more' button and event listeners
+      //TODO: add 'more info' button, add event listeners
       //
 
       taskGrid.appendChild(div);
     }
+    
+    //addProject(): a final empty task, the 'taskAdder', enables task addition:
+    const taskAdder = this.loadProjectElement('task', '+');
+    taskAdder.classList.add('task-adder');
+    taskGrid.appendChild(taskAdder);
+
     projectDiv.appendChild(taskGrid);
 
 
+    //addProject(): the utilityItems for each project:
+    //holds the editProject and deleteProject buttons!   
+    const utilityItems = document.createElement('div');
+    utilityItems.classList.add('utility-items');
+
+    //the deleteProjectButton will (later) open an 'are you sure?' modal
+    //and then delete from localStorage
+    const deleteProjectButton = document.createElement('img');
+    deleteProjectButton.setAttribute('src', './images/trash.svg');
+    deleteProjectButton.classList.add('svg');
+    utilityItems.appendChild(deleteProjectButton);
+    
+    //the editProjectButton will open a populated form which, upon submission,
+    //will change the item's attributes in localStorage
+    const editProjectButton = document.createElement('img');
+    editProjectButton.setAttribute('src', './images/edit.svg');
+    editProjectButton.classList.add('svg');
+    utilityItems.appendChild(editProjectButton);
+
+    projectDiv.appendChild(utilityItems);
+
+    
+    //EVENT LISTENERS!
+    //These describe the functions for the following elements:
+    //taskAdder, deleteProjectButton, and editProjectButton
+
+    //taskAdder function:
     //
-    //TODO: add event listeners
-    //TODO: add SVGs
+    //TODO
     //
+
+    //deleteProjectButton function:
+    //
+    //TODO
+    //
+
+    //editProjectButton function:
+    //
+    //TODO
+    //
+
+
+
+    //TODO: add 'more info' task button
 
 
     mainArea.appendChild(projectDiv);

@@ -1,11 +1,23 @@
 //this module is responsible for any changes to memory
-//this includes saving, deleting, and editing project/task data
-class memoryChanger {
+//this includes saving, deleting, editing, and loading project/task data
+class memoryModule {
   constructor() {
+
   }
+  getMemory(projectTitle) {
+    const loadedObject = JSON.parse(localStorage.getItem(projectTitle));
+    return loadedObject;
+  }
+  
+  loadPage() {
+  let projectArray = JSON.parse(localStorage.getItem('projectArray'));
+  return projectArray;
+  }
+
   deleteMemory(projectKey) {
     localStorage.removeItem(projectKey);
   }
+  
   saveMemory(project) {
     localStorage.setItem(`${project.title}`, JSON.stringify(project));
 

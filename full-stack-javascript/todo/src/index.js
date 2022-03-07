@@ -1,7 +1,6 @@
-import domChanger from './dom-changer.js';
+import domModule from './dom-module.js';
 import dateChanger from './date-changer.js';
-import memoryLoader from './memory-loader.js';
-import memoryChanger from './memory-changer.js';
+import memoryModule from './memory-module.js';
 
 
 class ProjectClass {
@@ -20,12 +19,16 @@ class TaskClass {
   }
 }
 
+let projectArray = memoryModule.loadPage();
 
-
-
-const loadedObject = memoryLoader.getTestMemory('This is a Test');
-domChanger.addProject(loadedObject);
-
+/*
+I'm not sure why, but this iterator isn't working for the object array:
+        for (const project in projectArray) {
+so I'm using a more primitive iterator instead:
+*/
+for (let i = 0; i < projectArray.length; i++) {
+  domChanger.addProject(projectArray[i]);
+}
 
 
 
@@ -49,15 +52,15 @@ testTasks.push(new ProjectClass('Hoog', 'ooh hello', '05/05/2424'));
 testTasks.push(new ProjectClass('BOOG', 'ooh hello', '01/01/2001'));
 
 const testProject = new ProjectClass(testTitle, testDesc, testDue, testTasks);
-memoryChanger.saveMemory(testProject);
+memoryModule.saveMemory(testProject);
 domChanger.addProject(testProject);
 */
 
 /*
-const testProject = memoryLoader.getTestMemory();
+const testProject = memoryModule.getTestMemory();
 
 if (!testProject) {
-  memoryChanger.saveTestMemory();
+  memoryModule.saveTestMemory();
 } else {
   domChanger.addProject(testProject);
 }
