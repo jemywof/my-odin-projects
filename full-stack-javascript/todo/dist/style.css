@@ -15,6 +15,7 @@ img.svg {
   border-radius: 4px;
   outline: 1px solid gray;
   padding: 4px;
+  cursor: pointer;
 }
 
 body {
@@ -32,6 +33,7 @@ button {
   font-weight: bold;
   border-radius: 5% 5%;
   box-shadow: none;
+  cursor: pointer;
 }
 
 
@@ -182,6 +184,8 @@ main {
   font-size: 1.5rem;
   color: rgb(50,50,50);
   background-color: var(--bg-light2);
+  outline: 1px solid gray;
+  cursor: pointer;
 }
 
 .utility-items {

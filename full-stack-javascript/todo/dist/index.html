@@ -9,11 +9,22 @@
   
 </head>
 <body>
-  <div id='toDoModal' class='modal'>
+  <div id='addToDoModal' class='modal'>
     <div class='create-fields'>
-      <span class="close">x</span>
       <p>Add ToDo:</p>
       <form action="/" method="POST">
+        <label for='title'>Title:</label>
+        <input type='text' name='title' id='title'>
+        <label for="due">Due Date:</label>
+        <input type="date" name="due" id="due">
+        <button type="submit" value="Submit">Add</button>
+      </form>
+    </div>
+  </div>
+  <div id='addProjectModal' class='modal'>
+    <div class='create-fields'>
+      <p>Add Project:</p>
+      <form>
         <label for='title'>Title:</label>
         <input type='text' name='title' id='title'>
         <label for='desc'>Description:</label>
@@ -21,21 +32,7 @@
         </textarea>
         <label for="due">Due Date:</label>
         <input type="date" name="due" id="due">
-        <button type="submit" value="Submit">Add</button>
-      </form>
-    </div>
-  </div>
-  <div id='projectModal' class='modal'>
-    <div class='create-fields'>
-      <span class="close">x</span>
-      <p>Add Project:</p>
-      <form action="/" method="POST">
-        <label for='title'>Title:</label>
-        <input type='text' name='title' id='title'>
-        <label for='desc'>Description:</label>
-        <textarea name='desc' id='desc' rows="4" cols="5">
-        </textarea>
-        <button type="submit" value="Submit">Add</button>
+        <button type="button" value="Submit" id="addProjectSubmitButton">Add</button>
       </form>
     </div>
   </div>

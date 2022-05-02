@@ -1,13 +1,18 @@
-import domModule from './dom-module.js';
-import dateChanger from './date-changer.js';
-import memoryModule from './memory-module.js';
+import {domModule, memoryModule} from './dom-module.js';
+//import dateChanger from './date-changer.js';
+//import memoryModule from './memory-module.js';
 
 
 class ProjectClass {
-  constructor(title, desc, due, tasks) {
-    this.title = title;
-    this.desc = desc;
-    this.due = due;
+  title = 'Unnamed Project';
+  desc = 'No description.';
+  due = new Date();
+  constructor(title, desc, due = new Date(), tasks) {
+    title = title.trim();
+    this.title = (title.length) ? title : 'Unnamed Project';
+    desc = desc.trim();
+    this.desc = (desc.length) ? desc : 'No description.';
+    this.due = (due) ? due : '12/12/2022';
     this.tasks = tasks;
   }
 }
@@ -19,50 +24,35 @@ class TaskClass {
   }
 }
 
-let projectArray = memoryModule.loadPage();
+const addProjectButton = document.querySelector('.add-project');
+addProjectButton.onclick = function() {
+  domModule.toggleModal('addProjectModal');
+}
 
+//Part 2 of addProjectModalListeners(): the form submission
+const addProjectSubmitButton = document.getElementById('addProjectSubmitButton');
+addProjectSubmitButton.onclick = function() {
+  //TODO: itemize contents: title, desc, due
+  const addProjectModal = document.getElementById('addProjectModal');
+  const title = addProjectModal.querySelector('#title').value;
+  const desc = addProjectModal.querySelector('#desc').value;
+  const due = addProjectModal.querySelector('#due').value;
+  const newProject = new ProjectClass (title, desc, due);
+  memoryModule.saveMemory(newProject);
+  domModule.toggleModal('addProjectModal');
+  domModule.addProject(newProject);
+}
+
+
+
+let projectArray = memoryModule.projectArray;
+if (projectArray) {
+  for (const project of projectArray) {
+    domModule.addProject(project);
+  }
+}
 /*
-I'm not sure why, but this iterator isn't working for the object array:
-        for (const project in projectArray) {
-so I'm using a more primitive iterator instead:
-*/
 for (let i = 0; i < projectArray.length; i++) {
-  domChanger.addProject(projectArray[i]);
+  domModule.addProject(projectArray[i]);
 }
-
-
-
-//below is just old code that I don't want to throw away yet.
-//. . .
-//. . .
-//. . .
-//don't shame me for hoarding.
-//
-//
-//
-/*
-const testTitle = "testProject";
-const testDesc = "ah shit here we go again";
-const testDue = '04/20/2020';
-const testTasks = [];
-testTasks.push
-
-testTasks.push(new ProjectClass('Clean GUTTER', 'ooh hello', '04/04/2024'));
-testTasks.push(new ProjectClass('Hoog', 'ooh hello', '05/05/2424'));
-testTasks.push(new ProjectClass('BOOG', 'ooh hello', '01/01/2001'));
-
-const testProject = new ProjectClass(testTitle, testDesc, testDue, testTasks);
-memoryModule.saveMemory(testProject);
-domChanger.addProject(testProject);
-*/
-
-/*
-const testProject = memoryModule.getTestMemory();
-
-if (!testProject) {
-  memoryModule.saveTestMemory();
-} else {
-  domChanger.addProject(testProject);
-}
-console.log("End");
 */

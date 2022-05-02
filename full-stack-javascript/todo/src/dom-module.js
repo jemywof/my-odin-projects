@@ -1,9 +1,29 @@
+import {memoryModule} from './memory-module.js';
+
 //this module handles any DOM manipulation
 //this includes adding or removing tasks/projects from the page
 //or displaying/clearing modals
-class domChanger {
+class domModuleClass {
   constructor() {
   }
+
+  //toggleModal = toggles display of a modal of the selected ID
+  toggleModal(modalID) {
+    const modal = document.getElementById(modalID);
+    if (modal.style.display == 'none') {
+      modal.style.display = 'block';
+      window.onclick = function(event) {
+        if (event.target == modal) {
+          modal.style.display = 'none';
+        }
+      }
+    }
+    else {
+      modal.style.display = 'none';
+    }
+
+  }
+
 
   //loadProjectElement helps addProject()
   //by creating a div, of a given class name,
@@ -13,6 +33,11 @@ class domChanger {
     div.classList.add(className);
     if (content) div.textContent = content;
     return div;
+  }
+
+  //removeProject simply removes the object from the DOM.
+  removeProject(projectDiv) {
+    projectDiv.remove();
   }
 
   //addProject loads a provided project-object into the DOM
@@ -41,40 +66,40 @@ class domChanger {
     taskGrid.classList.add('task-grid');
 
     let taskArray = loadedObject.tasks;
+    if (taskArray) {
+      for (const task of taskArray) {
+        //addProject(): this section adds a task's main data elements
+        //to the task grid:
+        //checkbox, title, due-date, and 'more' button
+        let div = document.createElement('div');
+        div.classList.add('task');
 
-    for (const task of taskArray) {
-      //addProject(): this section adds a task's main data elements
-      //to the task grid:
-      //checkbox, title, due-date, and 'more' button
-      let div = document.createElement('div');
-      div.classList.add('task');
+        let checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        div.appendChild(checkbox);
 
-      let checkbox = document.createElement('input');
-      checkbox.type = 'checkbox';
-      div.appendChild(checkbox);
+        let taskTitle = document.createElement('p');
+        taskTitle.textContent = task.title;
+        div.appendChild(taskTitle);
+        
+        let taskDesc = document.createElement('p');
+        taskDesc.textContent= task.desc;
 
-      let taskTitle = document.createElement('p');
-      taskTitle.textContent = task.title;
-      div.appendChild(taskTitle);
-      console.log(taskTitle);
-      
-      let taskDesc = document.createElement('p');
-      taskDesc.textContent= task.desc;
+        let taskDue = document.createElement('p');
+        taskDue.textContent = task.due;
+        div.appendChild(taskDue);
 
-      let taskDue = document.createElement('p');
-      taskDue.textContent = task.due;
-      div.appendChild(taskDue);
+        //
+        //TODO: add 'more info' button, add event listeners
+        //
 
-      //
-      //TODO: add 'more info' button, add event listeners
-      //
-
-      taskGrid.appendChild(div);
+        taskGrid.appendChild(div);
+      }
     }
-    
     //addProject(): a final empty task, the 'taskAdder', enables task addition:
     const taskAdder = this.loadProjectElement('task', '+');
     taskAdder.classList.add('task-adder');
+    //TODO: add eventListener for each taskAdder, to open a 'new task' modal
     taskGrid.appendChild(taskAdder);
 
     projectDiv.appendChild(taskGrid);
@@ -90,7 +115,12 @@ class domChanger {
     const deleteProjectButton = document.createElement('img');
     deleteProjectButton.setAttribute('src', './images/trash.svg');
     deleteProjectButton.classList.add('svg');
+    deleteProjectButton.onclick = () => {
+      projectDiv.remove();
+      memoryModule.deleteMemory(loadedObject.title);
+    }
     utilityItems.appendChild(deleteProjectButton);
+    //TODO: add 'Delete' eventListener
     
     //the editProjectButton will open a populated form which, upon submission,
     //will change the item's attributes in localStorage
@@ -98,6 +128,7 @@ class domChanger {
     editProjectButton.setAttribute('src', './images/edit.svg');
     editProjectButton.classList.add('svg');
     utilityItems.appendChild(editProjectButton);
+    //TODO: add 'edit' eventListener
 
     projectDiv.appendChild(utilityItems);
 
@@ -128,6 +159,9 @@ class domChanger {
 
     mainArea.appendChild(projectDiv);
   }
-}
 
-export default new domChanger
+}
+const domModule = new domModuleClass;
+
+export {domModule};
+export {memoryModule};
