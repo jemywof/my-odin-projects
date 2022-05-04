@@ -3,30 +3,9 @@ import {domModule, memoryModule} from './dom-module.js';
 //import memoryModule from './memory-module.js';
 
 
-class ProjectClass {
-  title = 'Unnamed Project';
-  desc = 'No description.';
-  due = new Date();
-  constructor(title, desc, due = new Date(), tasks) {
-    title = title.trim();
-    this.title = (title.length) ? title : 'Unnamed Project';
-    desc = desc.trim();
-    this.desc = (desc.length) ? desc : 'No description.';
-    this.due = (due) ? due : '12/12/2022';
-    this.tasks = tasks;
-  }
-}
-class TaskClass {
-  constructor(title, description, due) {
-    this.title = title;
-    this.desc = desc;
-    this.due = due;
-  }
-}
-
 const addProjectButton = document.querySelector('.add-project');
 addProjectButton.onclick = function() {
-  domModule.createAddProjectForm();
+  domModule.createNewForm('project');
 }
 
 /*

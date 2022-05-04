@@ -12,14 +12,15 @@ class ProjectClass {
     this.title = (title.length) ? title : 'Unnamed Project';
     desc = desc.trim();
     this.desc = (desc.length) ? desc : 'No description.';
-    this.due = (due) ? due : '12/12/2022';
+    this.due = (due) ? due : '2000-01-01';
     this.tasks = tasks;
   }
 }
 class TaskClass {
-  constructor(title, description, due) {
+  title = 'Unnamed task';
+  due = new Date();
+  constructor(title, due) {
     this.title = title;
-    this.desc = desc;
     this.due = due;
   }
 }
@@ -27,25 +28,13 @@ class domModuleClass {
   constructor() {
   }
 
-  //toggleModal = toggles display of a modal of the selected ID
-  toggleModal(modalID) {
-    const modal = document.getElementById(modalID);
-    if (modal.style.display == 'none') {
-      modal.style.display = 'block';
-      window.onclick = function(event) {
-        if (event.target == modal) {
-          modal.style.display = 'none';
-        }
-      }
-    }
-    else {
-      modal.style.display = 'none';
-    }
-
-  }
+ 
   //creates the modal form for adding a project
-  createAddProjectForm() {
-
+  createNewForm(type) {
+    if (type != 'project' && type != 'task') {
+      console.log('ERROR IN ADDING FORM MODAL; UNSPECIFIC FORM TYPE');
+      return;
+    }
     const modalDiv = document.createElement('div');
     modalDiv.id = 'addProjectModal';
     modalDiv.classList.add('modal');
@@ -81,18 +70,20 @@ class domModuleClass {
 
     appendLabelInputPair('title', 'text');
     
-    //Rather than convolute appendLabelInputPair() with too many args,
-    //here's some code dedicated to the label/input for
-    //the Description field
-    const descLabel = document.createElement('label');
-    descLabel.setAttribute('for', 'desc');
-    descLabel.textContent = 'Description:'
-    const descInput = document.createElement('textarea');
-    descInput.setAttribute('name', 'desc');
-    descInput.id = 'desc';
-    mainForm.appendChild(descLabel);
-    mainForm.appendChild(descInput);
 
+    if (type == 'project') {
+      //Rather than convolute appendLabelInputPair() with too many args,
+      //here's some code dedicated to the label/input for
+      //the Description field
+      const descLabel = document.createElement('label');
+      descLabel.setAttribute('for', 'desc');
+      descLabel.textContent = 'Description:'
+      const descInput = document.createElement('textarea');
+      descInput.setAttribute('name', 'desc');
+      descInput.id = 'desc';
+      mainForm.appendChild(descLabel);
+      mainForm.appendChild(descInput);
+    }
 
     appendLabelInputPair('due', 'date');
 
@@ -102,12 +93,22 @@ class domModuleClass {
     submitButton.id = 'addProjectSubmitButton';
     submitButton.textContent = 'Add';
     submitButton.onclick =  function() {
-      const addProjectModal = document.getElementById('addProjectModal');
-      const title = addProjectModal.querySelector('#title').value;
-      const desc = addProjectModal.querySelector('#desc').value;
-      const due = addProjectModal.querySelector('#due').value;
-      const newProject = new ProjectClass (title, desc, due);
-      memoryModule.saveMemory(newProject);
+      //the submit button gathers the relevant field values,
+      //generates the appropriate project/task object,
+      //and asks to update the DOM appropriately.
+      const title = modalDiv.querySelector('#title').value;
+      const due = modalDiv.querySelector('#due').value;
+      if (type == 'project') {
+        const desc = modalDiv.querySelector('#desc').value;
+        const submittedObject = new ProjectClass (title, desc, due);
+        memoryModule.saveMemory(submittedObject);
+      }
+      else if (type == 'task'){
+        //TODO:
+        //make the 'task' item save dynamically under its parent project
+        //and move the 'saveMemory' command BELOW these conditionals if possible
+        //const submittedObject = new TaskClass (title, due);
+      }
       //this.addProject(newProject);
       modalDiv.remove();
     }
