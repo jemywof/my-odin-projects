@@ -3,6 +3,26 @@ import {memoryModule} from './memory-module.js';
 //this module handles any DOM manipulation
 //this includes adding or removing tasks/projects from the page
 //or displaying/clearing modals
+class ProjectClass {
+  title = 'Unnamed Project';
+  desc = 'No description.';
+  due = new Date();
+  constructor(title, desc, due = new Date(), tasks) {
+    title = title.trim();
+    this.title = (title.length) ? title : 'Unnamed Project';
+    desc = desc.trim();
+    this.desc = (desc.length) ? desc : 'No description.';
+    this.due = (due) ? due : '12/12/2022';
+    this.tasks = tasks;
+  }
+}
+class TaskClass {
+  constructor(title, description, due) {
+    this.title = title;
+    this.desc = desc;
+    this.due = due;
+  }
+}
 class domModuleClass {
   constructor() {
   }
@@ -23,7 +43,79 @@ class domModuleClass {
     }
 
   }
+  //creates the modal form for adding a project
+  createAddProjectForm() {
 
+    const modalDiv = document.createElement('div');
+    modalDiv.id = 'addProjectModal';
+    modalDiv.classList.add('modal');
+
+    const formDiv = document.createElement('div');
+    formDiv.classList.add('create-fields');
+    modalDiv.appendChild(formDiv);
+
+    const titleP = document.createElement('p');
+    titleP.textContent = 'Add Project:';
+    formDiv.appendChild(titleP);
+
+    const mainForm = document.createElement('form');
+    formDiv.appendChild(mainForm);
+
+    //this function, appendLabelInputPair,
+    //appends two items to the mainForm HTML item:
+    //the 'label' and 'input' of a particular field
+    const appendLabelInputPair = function(name, inputType) {
+      const label = document.createElement('label');
+      label.setAttribute('for', name);
+      const displayText = name[0].toUpperCase() + name.substring(1);
+      label.textContent = `${displayText}:`;
+
+      const input = document.createElement('input');
+      input.setAttribute('type', inputType);
+      input.setAttribute('name', name);
+      input.id = name;
+
+      mainForm.appendChild(label);
+      mainForm.appendChild(input);
+    }
+
+    appendLabelInputPair('title', 'text');
+    
+    //Rather than convolute appendLabelInputPair() with too many args,
+    //here's some code dedicated to the label/input for
+    //the Description field
+    const descLabel = document.createElement('label');
+    descLabel.setAttribute('for', 'desc');
+    descLabel.textContent = 'Description:'
+    const descInput = document.createElement('textarea');
+    descInput.setAttribute('name', 'desc');
+    descInput.id = 'desc';
+    mainForm.appendChild(descLabel);
+    mainForm.appendChild(descInput);
+
+
+    appendLabelInputPair('due', 'date');
+
+    const submitButton = document.createElement('button');
+    submitButton.setAttribute('type', 'button');
+    submitButton.setAttribute('value', 'Submit');
+    submitButton.id = 'addProjectSubmitButton';
+    submitButton.textContent = 'Add';
+    submitButton.onclick =  function() {
+      const addProjectModal = document.getElementById('addProjectModal');
+      const title = addProjectModal.querySelector('#title').value;
+      const desc = addProjectModal.querySelector('#desc').value;
+      const due = addProjectModal.querySelector('#due').value;
+      const newProject = new ProjectClass (title, desc, due);
+      memoryModule.saveMemory(newProject);
+      //this.addProject(newProject);
+      modalDiv.remove();
+    }
+    mainForm.appendChild(submitButton);
+
+    document.body.appendChild(modalDiv);
+
+  }
 
   //loadProjectElement helps addProject()
   //by creating a div, of a given class name,
@@ -33,11 +125,6 @@ class domModuleClass {
     div.classList.add(className);
     if (content) div.textContent = content;
     return div;
-  }
-
-  //removeProject simply removes the object from the DOM.
-  removeProject(projectDiv) {
-    projectDiv.remove();
   }
 
   //addProject loads a provided project-object into the DOM

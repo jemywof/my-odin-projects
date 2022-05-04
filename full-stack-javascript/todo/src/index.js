@@ -26,12 +26,20 @@ class TaskClass {
 
 const addProjectButton = document.querySelector('.add-project');
 addProjectButton.onclick = function() {
-  domModule.toggleModal('addProjectModal');
+  domModule.createAddProjectForm();
 }
 
+/*
+function() {
+  domModule.toggleModal('addProjectModal');
+}
+*/
+
 //Part 2 of addProjectModalListeners(): the form submission
-const addProjectSubmitButton = document.getElementById('addProjectSubmitButton');
-addProjectSubmitButton.onclick = function() {
+
+
+
+/*function() {
   //TODO: itemize contents: title, desc, due
   const addProjectModal = document.getElementById('addProjectModal');
   const title = addProjectModal.querySelector('#title').value;
@@ -42,7 +50,7 @@ addProjectSubmitButton.onclick = function() {
   domModule.toggleModal('addProjectModal');
   domModule.addProject(newProject);
 }
-
+*/
 
 
 let projectArray = memoryModule.projectArray;
