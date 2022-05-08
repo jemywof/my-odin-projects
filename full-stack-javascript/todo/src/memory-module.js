@@ -46,7 +46,9 @@ class memoryModuleClass {
   }
 
   removeTask(task, project) {
-    
+    if (!task || !project) return;
+    project.tasks = project.tasks.filter(item => item.title != task.title);
+    this.editProject(project.title, project);
   }
 
 }

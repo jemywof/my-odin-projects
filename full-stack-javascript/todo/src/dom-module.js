@@ -118,12 +118,12 @@ class domModuleClass {
           parentProjectMemory.tasks = [task];
         }
         //push new object to memoryModule.editMemory();
-        memoryModule.editMemory(projectKey, parentProjectMemory);
+        memoryModule.editProject(projectKey, parentProjectMemory);
 
         let taskGrid = parentProjectHTML.querySelector('.task-grid');
 
-        //hack-load the HTML by just adding to the parentProjectHTML's task grid
-        //this is still bad design; copy-pasted from below
+        //load the HTML by just adding to the parentProjectHTML's task grid
+        //this is still bad design; mostly copy-pasted from below
         
         let div = document.createElement('div');
         div.classList.add('task');
@@ -131,6 +131,12 @@ class domModuleClass {
         let checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         div.appendChild(checkbox);
+        checkbox.onclick = function() {
+          memoryModule.removeTask(task, parentProjectMemory);
+          const taskHTML = this.parentNode;
+          taskHTML.remove();
+          //TODO: add fade-out animation
+        }
 
         let taskTitle = document.createElement('p');
         taskTitle.textContent = task.title;
@@ -212,6 +218,8 @@ class domModuleClass {
           const taskName = task.title
           const projectKey = loadedObject.title;
           memoryModule.removeTask(task, loadedObject);
+          //TODO: add fade-out animation
+          task.remove();
         }
 
         let taskTitle = document.createElement('p');
