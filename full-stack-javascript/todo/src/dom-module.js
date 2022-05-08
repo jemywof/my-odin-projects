@@ -4,24 +4,23 @@ import {memoryModule} from './memory-module.js';
 //this includes adding or removing tasks/projects from the page
 //or displaying/clearing modals
 class ProjectClass {
-  title = 'Unnamed Project';
-  desc = 'No description.';
-  due = new Date();
   constructor(title, desc, due = new Date(), tasks) {
     title = title.trim();
     this.title = (title.length) ? title : 'Unnamed Project';
+
     desc = desc.trim();
     this.desc = (desc.length) ? desc : 'No description.';
+
     this.due = (due) ? due : '2000-01-01';
+
     this.tasks = tasks;
   }
 }
 class TaskClass {
-  title = 'Unnamed task';
-  due = new Date();
   constructor(title, due) {
-    this.title = title;
-    this.due = due;
+    title = title.trim();
+    this.title = (title.length) ? title : 'Unnamed Project';
+    this.due = (due) ? due : '2000-01-01';
   }
 }
 class domModuleClass {
@@ -30,9 +29,9 @@ class domModuleClass {
 
  
   //creates the modal form for adding a project
-  createNewForm(type) {
+  createNewForm(type, parentProjectHTML) {
     if (type != 'project' && type != 'task') {
-      console.log('ERROR IN ADDING FORM MODAL; UNSPECIFIC FORM TYPE');
+      console.error('ERROR IN ADDING FORM MODAL; UNSPECIFIED FORM TYPE');
       return;
     }
     const modalDiv = document.createElement('div');
@@ -70,7 +69,6 @@ class domModuleClass {
 
     appendLabelInputPair('title', 'text');
     
-
     if (type == 'project') {
       //Rather than convolute appendLabelInputPair() with too many args,
       //here's some code dedicated to the label/input for
@@ -84,7 +82,7 @@ class domModuleClass {
       mainForm.appendChild(descLabel);
       mainForm.appendChild(descInput);
     }
-
+    
     appendLabelInputPair('due', 'date');
 
     const submitButton = document.createElement('button');
@@ -98,19 +96,64 @@ class domModuleClass {
       //and asks to update the DOM appropriately.
       const title = modalDiv.querySelector('#title').value;
       const due = modalDiv.querySelector('#due').value;
+
       if (type == 'project') {
         const desc = modalDiv.querySelector('#desc').value;
         const submittedObject = new ProjectClass (title, desc, due);
-        memoryModule.saveMemory(submittedObject);
+        memoryModule.saveProject(submittedObject);
+        domModule.addProject(submittedObject);
       }
       else if (type == 'task'){
-        //TODO:
-        //make the 'task' item save dynamically under its parent project
-        //and move the 'saveMemory' command BELOW these conditionals if possible
-        //const submittedObject = new TaskClass (title, due);
+        const projectKey = parentProjectHTML.querySelector('.project-title').textContent;
+        //This is very bad design, so I'm listing its actions bit-by-bit
+        //Create a new task object
+        const task = new TaskClass(title, due);
+        //Find the parent Project in projectArray
+        const parentProjectMemory = memoryModule.projectArray.find(project => project.title == projectKey);
+        //push task to Project's task array
+        if (parentProjectMemory.tasks) {
+          parentProjectMemory.tasks.unshift(task);
+        }
+        else {
+          parentProjectMemory.tasks = [task];
+        }
+        //push new object to memoryModule.editMemory();
+        memoryModule.editMemory(projectKey, parentProjectMemory);
+
+        let taskGrid = parentProjectHTML.querySelector('.task-grid');
+
+        //hack-load the HTML by just adding to the parentProjectHTML's task grid
+        //this is still bad design; copy-pasted from below
+        
+        let div = document.createElement('div');
+        div.classList.add('task');
+
+        let checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        div.appendChild(checkbox);
+
+        let taskTitle = document.createElement('p');
+        taskTitle.textContent = task.title;
+        div.appendChild(taskTitle);
+
+        let taskDue = document.createElement('p');
+        taskDue.textContent = task.due;
+        div.appendChild(taskDue);
+
+        //
+        //TODO: add 'check' event listener
+        //
+
+        taskGrid.insertBefore(div, taskGrid.firstChild);
+
       }
       //this.addProject(newProject);
       modalDiv.remove();
+    }
+    window.onclick = function(event) {
+      if (event.target == modalDiv) {
+        modalDiv.remove();
+      }
     }
     mainForm.appendChild(submitButton);
 
@@ -158,27 +201,30 @@ class domModuleClass {
       for (const task of taskArray) {
         //addProject(): this section adds a task's main data elements
         //to the task grid:
-        //checkbox, title, due-date, and 'more' button
+        //checkbox, title, due-date
         let div = document.createElement('div');
         div.classList.add('task');
 
         let checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         div.appendChild(checkbox);
+        checkbox.onclick = function() {
+          const taskName = task.title
+          const projectKey = loadedObject.title;
+          memoryModule.removeTask(task, loadedObject);
+        }
 
         let taskTitle = document.createElement('p');
         taskTitle.textContent = task.title;
+        taskTitle.classList.add('task-title');
         div.appendChild(taskTitle);
-        
-        let taskDesc = document.createElement('p');
-        taskDesc.textContent= task.desc;
 
         let taskDue = document.createElement('p');
         taskDue.textContent = task.due;
         div.appendChild(taskDue);
 
         //
-        //TODO: add 'more info' button, add event listeners
+        //TODO: add check event listener
         //
 
         taskGrid.appendChild(div);
@@ -187,7 +233,13 @@ class domModuleClass {
     //addProject(): a final empty task, the 'taskAdder', enables task addition:
     const taskAdder = this.loadProjectElement('task', '+');
     taskAdder.classList.add('task-adder');
-    //TODO: add eventListener for each taskAdder, to open a 'new task' modal
+    taskAdder.onclick = function() {
+      //make new form
+      let parentProjectHTML = this.parentNode.parentNode;
+      domModule.createNewForm('task', parentProjectHTML);
+      //push to loadedObject.tasks array
+      //save new object to memory
+    }
     taskGrid.appendChild(taskAdder);
 
     projectDiv.appendChild(taskGrid);
@@ -204,11 +256,50 @@ class domModuleClass {
     deleteProjectButton.setAttribute('src', './images/trash.svg');
     deleteProjectButton.classList.add('svg');
     deleteProjectButton.onclick = () => {
-      projectDiv.remove();
-      memoryModule.deleteMemory(loadedObject.title);
+      const modalDiv = document.createElement('div');
+      modalDiv.id = 'addProjectModal';
+      modalDiv.classList.add('modal');
+
+      const formDiv = document.createElement('div');
+      formDiv.classList.add('create-fields');
+      modalDiv.appendChild(formDiv);
+
+      window.onclick = function(event) {
+        if (event.target == modalDiv) {
+          modalDiv.remove();
+        }
+      }
+
+      const confirmText = document.createElement('h2');
+      confirmText.textContent = `Are you sure you want to delete "${loadedObject.title}?"`;
+      formDiv.appendChild(confirmText);
+      
+      const confirmButton = document.createElement('button');
+      //confirmButton.setAttribute('type', 'button');
+      //confirmButton.setAttribute('value', 'Submit');
+      confirmButton.id = 'addProjectSubmitButton';
+      confirmButton.textContent = 'Yes';
+      confirmButton.onclick =  function() {      
+        projectDiv.remove();
+        modalDiv.remove();
+        memoryModule.deleteProject(loadedObject.title);
+      }
+      formDiv.appendChild(confirmButton);
+
+      const rejectButton = document.createElement('button');
+      //rejectButton.setAttribute('type', 'button');
+      //rejectButton.setAttribute('value', 'Submit');
+      rejectButton.id = 'addProjectSubmitButton';
+      rejectButton.textContent = 'No!';
+      rejectButton.onclick = function() {
+        modalDiv.remove();
+      }
+      formDiv.appendChild(rejectButton);
+
+      document.body.appendChild(modalDiv);
     }
+
     utilityItems.appendChild(deleteProjectButton);
-    //TODO: add 'Delete' eventListener
     
     //the editProjectButton will open a populated form which, upon submission,
     //will change the item's attributes in localStorage
@@ -225,24 +316,11 @@ class domModuleClass {
     //These describe the functions for the following elements:
     //taskAdder, deleteProjectButton, and editProjectButton
 
-    //taskAdder function:
-    //
-    //TODO
-    //
-
-    //deleteProjectButton function:
-    //
-    //TODO
-    //
 
     //editProjectButton function:
     //
     //TODO
     //
-
-
-
-    //TODO: add 'more info' task button
 
 
     mainArea.appendChild(projectDiv);
