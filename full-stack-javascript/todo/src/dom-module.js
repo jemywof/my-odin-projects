@@ -30,9 +30,15 @@ class domModuleClass {
  
   //creates the modal form for adding a project
   createNewForm(type, parentProjectHTML) {
-    if (type != 'project' && type != 'task') {
+    if (type != 'newProject' && type != 'task' && type!= 'editProject') {
       console.error('ERROR IN ADDING FORM MODAL; UNSPECIFIED FORM TYPE');
       return;
+    }
+    if (type == 'task' || type == 'editProject') {
+      if (!parentProjectHTML) {
+        console.error('ERROR: parentProjectHTML not provided for new form');
+        return;
+      }
     }
     const modalDiv = document.createElement('div');
     modalDiv.id = 'addProjectModal';
@@ -43,7 +49,15 @@ class domModuleClass {
     modalDiv.appendChild(formDiv);
 
     const titleP = document.createElement('p');
-    titleP.textContent = 'Add Project:';
+    if (type == 'newProject') {
+      titleP.textContent = 'Add Project:';
+    }
+    else if (type == 'editProject') {
+      titleP.textContent = 'Edit Project';
+    }
+    else {
+      titleP.textContent = 'Add Task';
+    }
     formDiv.appendChild(titleP);
 
     const mainForm = document.createElement('form');
@@ -69,7 +83,7 @@ class domModuleClass {
 
     appendLabelInputPair('title', 'text');
     
-    if (type == 'project') {
+    if (type == 'newProject' || type == 'editProject') {
       //Rather than convolute appendLabelInputPair() with too many args,
       //here's some code dedicated to the label/input for
       //the Description field
@@ -85,11 +99,24 @@ class domModuleClass {
     
     appendLabelInputPair('due', 'date');
 
+    if (type == 'editProject') {
+      const projectKey = parentProjectHTML.querySelector('.project-title').textContent;
+      //Find the parent Project in projectArray
+      const parentProjectMemory = memoryModule.projectArray.find(project => project.title == projectKey);
+      //Fill out the form values from parentProjectMemory
+      let titleInput = mainForm.querySelector('#title');
+      let descInput = mainForm.querySelector('#desc');
+      let dueInput = mainForm.querySelector('#due');
+      titleInput.value = parentProjectMemory.title;
+      descInput.textContent = parentProjectMemory.desc;
+      dueInput.textContent = parentProjectMemory.due;
+    }
+
     const submitButton = document.createElement('button');
     submitButton.setAttribute('type', 'button');
     submitButton.setAttribute('value', 'Submit');
     submitButton.id = 'addProjectSubmitButton';
-    submitButton.textContent = 'Add';
+    submitButton.textContent = 'Submit';
     submitButton.onclick =  function() {
       //the submit button gathers the relevant field values,
       //generates the appropriate project/task object,
@@ -97,13 +124,32 @@ class domModuleClass {
       const title = modalDiv.querySelector('#title').value;
       const due = modalDiv.querySelector('#due').value;
 
-      if (type == 'project') {
+      if (type == 'newProject') {
         const desc = modalDiv.querySelector('#desc').value;
         const submittedObject = new ProjectClass (title, desc, due);
         memoryModule.saveProject(submittedObject);
         domModule.addProject(submittedObject);
       }
-      else if (type == 'task'){
+      else if (type == 'editProject') {
+        //save all values into memory through editProject();
+        const titleHTML = parentProjectHTML.querySelector('.project-title');
+
+        const projectKey = parentProjectHTML.querySelector('.project-title').textContent;
+        const desc = modalDiv.querySelector('#desc').value;
+        const submittedObject = new ProjectClass (title, desc, due);
+        memoryModule.editProject(projectKey, submittedObject);
+
+        //Now replace the item's values in the DOM:
+        titleHTML.textContent = submittedObject.title;
+
+        const descHTML = parentProjectHTML.querySelector('.project-desc');
+        descHTML.textContent = submittedObject.desc;
+
+        const dueHTML = parentProjectHTML.querySelector('.project-due');
+        dueHTML.textContent = submittedObject.due;
+        
+      }
+      else if (type == 'task') {
         const projectKey = parentProjectHTML.querySelector('.project-title').textContent;
         //This is very bad design, so I'm listing its actions bit-by-bit
         //Create a new task object
@@ -145,10 +191,6 @@ class domModuleClass {
         let taskDue = document.createElement('p');
         taskDue.textContent = task.due;
         div.appendChild(taskDue);
-
-        //
-        //TODO: add 'check' event listener
-        //
 
         taskGrid.insertBefore(div, taskGrid.firstChild);
 
@@ -219,7 +261,7 @@ class domModuleClass {
           const projectKey = loadedObject.title;
           memoryModule.removeTask(task, loadedObject);
           //TODO: add fade-out animation
-          task.remove();
+          this.parentNode.remove();
         }
 
         let taskTitle = document.createElement('p');
@@ -230,10 +272,6 @@ class domModuleClass {
         let taskDue = document.createElement('p');
         taskDue.textContent = task.due;
         div.appendChild(taskDue);
-
-        //
-        //TODO: add check event listener
-        //
 
         taskGrid.appendChild(div);
       }
@@ -314,8 +352,10 @@ class domModuleClass {
     const editProjectButton = document.createElement('img');
     editProjectButton.setAttribute('src', './images/edit.svg');
     editProjectButton.classList.add('svg');
+    editProjectButton.onclick = function() {
+      domModule.createNewForm('editProject', projectDiv);
+    }
     utilityItems.appendChild(editProjectButton);
-    //TODO: add 'edit' eventListener
 
     projectDiv.appendChild(utilityItems);
 
@@ -325,10 +365,6 @@ class domModuleClass {
     //taskAdder, deleteProjectButton, and editProjectButton
 
 
-    //editProjectButton function:
-    //
-    //TODO
-    //
 
 
     mainArea.appendChild(projectDiv);

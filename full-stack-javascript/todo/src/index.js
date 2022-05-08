@@ -2,7 +2,7 @@ import {domModule, memoryModule} from './dom-module.js';
 
 const addProjectButton = document.querySelector('.add-project');
 addProjectButton.onclick = function() {
-  domModule.createNewForm('project');
+  domModule.createNewForm('newProject');
 }
 
 let projectArray = memoryModule.projectArray;
