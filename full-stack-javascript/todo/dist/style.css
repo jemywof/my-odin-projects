@@ -69,6 +69,26 @@ button {
 .create-fields > p {
   font-size: 2rem;
 }
+
+.confirm-field {
+  display: flex;
+  gap: .2rem;
+  flex-direction: column;
+  background-color: var(--bg-light);
+  margin: 1% auto;
+  padding: 2rem;
+  padding-top: 5px;
+  border: 1px solid black;
+  width: 25%;
+  border-radius: 1rem;
+  justify-content: center;
+  text-align: center;
+}
+.confirm-button {
+  width: 5px;
+  color: red;
+}
+
 form {
   display: flex;
   flex-direction: column;
