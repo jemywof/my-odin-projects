@@ -4,9 +4,7 @@
 
 //initialize general global variables
 
-//i don't use this array for anything
-//but ODIN said I should use it
-//so here we are!
+
 let myLibrary = [];
 myLibrary.push(new Book("War and Peace", "Leo Tolstoy", 90000, true))
 myLibrary.push(new Book("IT", "Stephen King", 800, false))
@@ -43,7 +41,6 @@ Book.prototype.announce = function() {
 //prototype 'addCard' function
 //adds any given Book to the HTML in a 'book-card' div
 Book.prototype.addCard = function(uniqueNumber) {
-
   //for each property of Book: 
   //create an element, add the property, and append to the div
   let bookCard = document.createElement('div');
@@ -93,7 +90,6 @@ Book.prototype.addCard = function(uniqueNumber) {
 
 
   //add everything to the page!
-
   document.getElementById('bookDisplay').appendChild(bookCard);
 }
 
@@ -155,4 +151,3 @@ function removeCard() {
 document.addEventListener("DOMContentLoaded", function() {
   myLibrary.map(book => book.addCard());
 });
-
