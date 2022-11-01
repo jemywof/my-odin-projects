@@ -1,4 +1,4 @@
-import {memoryModule} from './memory-module.js';
+import { memoryModule } from './memory-module.js'
 
 // this module handles any DOM manipulation
 // this includes adding or removing tasks/projects from the page
