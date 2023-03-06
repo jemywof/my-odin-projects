@@ -126,7 +126,6 @@ function submitBookForm() {
   let pageCount = document.getElementById('pageCount').value;
   let hasRead = document.querySelector('input[name=hasRead]:checked').value;
   if (!title || !author || !pageCount || !hasRead) return;
-  console.log(title, author, pageCount, hasRead);
   loadBook(title, author, pageCount, hasRead);
 }
 

@@ -26,8 +26,18 @@ a, p {
   font-size: 20px;
 }
 
+button {
+  cursor: pointer;
+}
+
 .create-button {
-  
+  margin-left: auto;
+  background-color: white;
+  padding: 0.2rem;
+  padding-inline: 0.5rem;
+  border-radius: 0.5rem;
+  border: 2px solid black;
+
 }
 
 .modal {
@@ -46,17 +56,28 @@ a, p {
 .create-fields {
   background-color: #fefefe;
   margin: 15% auto;
-  padding: 20px;
+  padding: 1.5rem;
   border: 1px solid #888;
   width: 80%;
+  border-radius: 0.5rem;
+  padding-block: 3rem;
+  font-size: 1.5rem;
 }
 
 .modal-has-read {
   display: flex;
+  font-size: 1.5rem;
+  margin-block: 2rem;
+}
+.has-read-prompt {
+  font-size: 1.5rem;
+  font-weight: normal;
 }
 .radio-field {
   display: flex;
+  margin-left: 1rem;
   flex-direction: column;
+  font-size: 1.5rem;
 }
 
 .close {
@@ -64,6 +85,7 @@ a, p {
   float: right;
   font-size: 28px;
   font-weight: bold;
+  margin-top: -2.5rem;
 }
 
 .close:hover,
@@ -136,7 +158,14 @@ main {
 }
 
 .remove-button {
-  
+  margin-left: auto;
+  margin-block: 0.5rem;
+  background-color: white;
+  padding: 0.2rem;
+  padding-inline: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid black;
+  color: red;
 }
 
 .footer {
